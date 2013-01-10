@@ -1,0 +1,65 @@
+#!/usr/bin/env ruby
+$:.unshift(File.dirname(__FILE__) + '/../lib') unless $:.include?(File.dirname(__FILE__) + '/../lib')
+
+require 'optparse'
+require 'wordfor'
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = <<-EOS
+wordfor is a command line thesaurus.
+
+Usage:
+
+    wordfor WORD
+EOS
+
+  opts.on('-v', '--verbose', 'more noisy') do |v|
+    options[:verbose] = v
+  end
+
+  opts.on('-d', '--debug', 'debugging output') do |d|
+    options[:debug] = d
+  end
+end.parse!
+
+word = ARGV[0]
+
+if word.nil?
+  puts "You must give a word to look up."
+  exit 1
+else
+  word = word.strip
+end
+
+if Wordfor::Setup.run_setup?
+  Wordfor::Setup.new($stdin, $stdout).run
+end
+
+result = Wordfor::Lookup.new( Wordfor::Configuration.api_key ).lookup(word)
+
+if options[:debug]
+  puts result.inspect
+  puts result.keys.inspect
+end
+
+result.each_pair do |(part_of_speech, words)|
+  if words
+    puts "#{ part_of_speech }:"
+
+    if words['syn']
+      word_list = words['syn'].join(", ")
+
+      puts "  synonyms:"
+      puts '    ' + Wordfor::Plaintext.wrapped_text(word_list, :indent => '    ')
+    end
+
+    if words['ant']
+      word_list = words['ant'].join(", ")
+
+      puts "  antonyms:"
+      puts '    ' + Wordfor::Plaintext.wrapped_text(word_list, :indent => '    ')
+    end
+  end
+end
