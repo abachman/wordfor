@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = Wordfor::VERSION
   gem.authors       = ["Adam Bachman"]
   gem.email         = ["adam.bachman@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Find synonyms and antonyms from the command line.}
+  gem.summary       = %q{A thesaurus for your command line.}
+  gem.homepage      = "http://github.com/abachman/wordfor"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
