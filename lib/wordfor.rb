@@ -1,6 +1,7 @@
 require 'httparty'
 
 require 'wordfor/core_ext/array'
+require 'wordfor/core_ext/dir'
 
 require 'wordfor/version'
 require 'wordfor/configuration'
