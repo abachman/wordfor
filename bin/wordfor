@@ -19,14 +19,19 @@ use this program.
 
 EOS
 
-  opts.on('-v', '--verbose', 'more noisy') do |v|
-    options[:verbose] = v
+  opts.on('-v', '--version', 'show version and quit') do |v|
+    options[:version] = v
   end
 
   opts.on('-d', '--debug', 'debugging output') do |d|
     options[:debug] = d
   end
 end.parse!
+
+if options[:version]
+  puts "wordfor #{ Wordfor::VERSION } #{ Wordfor::VERSION_DATE }"
+  exit 0
+end
 
 word = ARGV[0]
 
