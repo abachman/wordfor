@@ -1,24 +1,33 @@
 # Wordfor
 
-TODO: Write a gem description
+A simple command line thesaurus based on the
+[WordNet](http://wordnet.princeton.edu/) database. It can help you get other
+**word**s **for** things, which can be particularly useful if your dayjob
+requires frequent naming of things.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'wordfor'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install the gem by running:
 
     $ gem install wordfor
 
+This gem requires Ruby 1.9.2 or higher.
+
 ## Usage
 
-TODO: Write usage instructions here
+the command:
+
+    $ wordfor truth
+
+prints:
+
+    noun:
+      synonyms:
+        the true, verity, trueness, true statement, accuracy, Truth, Sojourner Truth,
+        abolitionist, actuality, emancipationist, fact, feminist, libber, quality,
+        statement, women's liberationist, women's rightist
+      antonyms:
+        falsehood, falsity, inaccuracy
 
 ## Contributing
 
