@@ -1,11 +1,8 @@
-require 'httparty'
-
 require 'wordfor/core_ext/array'
 require 'wordfor/core_ext/dir'
 
 require 'wordfor/version'
 require 'wordfor/configuration'
-require 'wordfor/setup'
 require 'wordfor/plaintext'
 require 'wordfor/lookup'
 

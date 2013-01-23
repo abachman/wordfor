@@ -37,11 +37,7 @@ else
   word = word.strip
 end
 
-if Wordfor::Setup.run_setup?
-  Wordfor::Setup.new($stdin, $stdout).run
-end
-
-result = Wordfor::Lookup.new( Wordfor::Configuration.api_key ).lookup(word)
+result = Wordfor::Lookup.new.lookup(word)
 
 if options[:debug]
   puts result.inspect
