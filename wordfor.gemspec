@@ -19,4 +19,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'wordnet'
   gem.add_dependency 'wordnet-defaultdb'
+
+  gem.required_ruby_version = '>= 1.9.2'
 end
