@@ -49,22 +49,21 @@ if options[:debug]
   puts result.keys.inspect
 end
 
+def display_word_relationship(words, relationship)
+  if words[relationship]
+    word_list = words[relationship].join(", ")
+    puts "  #{ relationship }:"
+    puts '    ' + Wordfor::Plaintext.wrapped_text(word_list, :indent => '    ')
+  end
+end
+
 result.each_pair do |(part_of_speech, words)|
   if words
     puts "#{ part_of_speech }:"
 
-    if words['syn']
-      word_list = words['syn'].join(", ")
-
-      puts "  synonyms:"
-      puts '    ' + Wordfor::Plaintext.wrapped_text(word_list, :indent => '    ')
-    end
-
-    if words['ant']
-      word_list = words['ant'].join(", ")
-
-      puts "  antonyms:"
-      puts '    ' + Wordfor::Plaintext.wrapped_text(word_list, :indent => '    ')
-    end
+    display_word_relationship words, :synonyms
+    display_word_relationship words, :hyponyms
+    display_word_relationship words, :hypernyms
+    display_word_relationship words, :antonyms
   end
 end

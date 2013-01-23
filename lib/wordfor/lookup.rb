@@ -5,6 +5,7 @@ module Wordfor
   class Lookup
     def initialize
       @lexicon = WordNet::Lexicon.new
+
     end
 
     # Based on example code:
@@ -17,41 +18,29 @@ module Wordfor
     # }.reject {|l| l.size == 0}
 
     def lookup(word)
+      @input_word = word
+      @visited = {}
+      @pos_map = {}
+
       origins = @lexicon.lookup_synsets word
 
-      @visited = {}
-
-      @pos_map = {}
       origins.each {|o|
-        break if @visited[o.synsetid]
-        @visited[o.synsetid] = o
-
-        pos = o.part_of_speech.to_sym
-
-        @pos_map[pos] ||= {}
-        @pos_map[pos]['syn'] ||= []
-        @pos_map[pos]['syn'].concat filter(o.words.map(&:lemma), word)
+        break if visited?(o)
+        add_synset_to_map o, :synonyms
 
         o.traverse(:hyponyms).with_index.each {|ss|
-          break if @visited[ss.synsetid]
-          @visited[ss.synsetid] = ss
+          break if visited?(ss)
+          add_synset_to_map ss, :hyponyms
+        }
 
-          pos = ss.part_of_speech.to_sym
-
-          @pos_map[pos] ||= {}
-          @pos_map[pos]['syn'] ||= []
-          @pos_map[pos]['syn'].concat filter(ss.words.map(&:lemma), word)
+        o.traverse(:hypernyms).with_index.each {|ss|
+          break if visited?(ss)
+          add_synset_to_map ss, :hypernyms
         }
 
         o.traverse(:antonyms).with_index.each {|ss|
-          break if @visited[ss.synsetid]
-          @visited[ss.synsetid] = ss
-
-          pos = ss.part_of_speech.to_sym
-
-          @pos_map[pos] ||= {}
-          @pos_map[pos]['ant'] ||= []
-          @pos_map[pos]['ant'].concat filter(ss.words.map(&:lemma), word)
+          break if visited?(ss)
+          add_synset_to_map ss, :antonyms
         }
       }
 
@@ -60,8 +49,25 @@ module Wordfor
 
     private
 
+    def visited? ss
+      if @visited[ss.synsetid]
+        true
+      else
+        @visited[ss.synsetid] = ss
+        false
+      end
+    end
+
     def filter list, word
       list.reject {|w| w == word}
+    end
+
+    def add_synset_to_map synset, relation
+      pos = synset.part_of_speech.to_sym
+
+      @pos_map[pos] ||= {}
+      @pos_map[pos][relation] ||= []
+      @pos_map[pos][relation].concat filter(synset.words.map(&:lemma), @input_word)
     end
   end
 end
