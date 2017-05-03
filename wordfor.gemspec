@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'wordnet'
+  gem.add_dependency 'wordnet', '= 1.0.0'
   gem.add_dependency 'wordnet-defaultdb'
 
   gem.required_ruby_version = '>= 1.9.2'
